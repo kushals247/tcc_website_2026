@@ -11,7 +11,7 @@ $posts = $ecosystem ? get_posts([
     'category_name' => $ecosystem,
 ]) : [];
 
-$use_fallback = count($posts) < 3;
+$use_fallback = count($posts) === 0;
 ?>
 <section class="tc-pillar-articles bg-white py-20 md:py-24">
     <div class="max-w-6xl mx-auto px-6">
