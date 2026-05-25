@@ -5,7 +5,7 @@
 
 if (!defined('ABSPATH')) exit;
 
-define('TC_THEME_VERSION', '0.3.0');
+define('TC_THEME_VERSION', '0.4.0');
 define('TC_THEME_DIR', get_stylesheet_directory());
 define('TC_THEME_URI', get_stylesheet_directory_uri());
 define('TC_GSAP_VERSION', '3.12.5');
@@ -36,6 +36,7 @@ function tc_theme_enqueue_assets() {
     if (is_front_page()) {
         wp_enqueue_script('tc-hero-carousel', TC_THEME_URI . '/assets/js/hero-carousel.js', ['tc-theme-main'], TC_THEME_VERSION, true);
         wp_enqueue_script('tc-brand-slider', TC_THEME_URI . '/assets/js/brand-slider.js', ['tc-theme-main'], TC_THEME_VERSION, true);
+        wp_enqueue_script('tc-testimonials-carousel', TC_THEME_URI . '/assets/js/testimonials-carousel.js', ['tc-theme-main'], TC_THEME_VERSION, true);
     }
 }
 add_action('wp_enqueue_scripts', 'tc_theme_enqueue_assets', 20);
@@ -76,6 +77,10 @@ if (file_exists(TC_THEME_DIR . '/inc/acf-fields.php')) {
 
 if (file_exists(TC_THEME_DIR . '/inc/acf-fields-phase-2-2a.php')) {
     require_once TC_THEME_DIR . '/inc/acf-fields-phase-2-2a.php';
+}
+
+if (file_exists(TC_THEME_DIR . '/inc/acf-fields-phase-2-2b.php')) {
+    require_once TC_THEME_DIR . '/inc/acf-fields-phase-2-2b.php';
 }
 
 function tc_theme_register_options_page() {

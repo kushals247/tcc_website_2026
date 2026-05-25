@@ -11,6 +11,10 @@ get_header();
   <?php get_template_part('template-parts/ecosystem-cards'); ?>
   <?php get_template_part('template-parts/shop-by-room'); ?>
   <?php get_template_part('template-parts/brand-partners'); ?>
+  <?php get_template_part('template-parts/featured-products'); ?>
+  <?php get_template_part('template-parts/inspiration-preview'); ?>
+  <?php get_template_part('template-parts/testimonials'); ?>
+  <?php get_template_part('template-parts/store-locator-strip'); ?>
 </div>
 <?php
 get_footer();
