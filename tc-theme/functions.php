@@ -5,7 +5,7 @@
 
 if (!defined('ABSPATH')) exit;
 
-define('TC_THEME_VERSION', '0.2.0');
+define('TC_THEME_VERSION', '0.3.0');
 define('TC_THEME_DIR', get_stylesheet_directory());
 define('TC_THEME_URI', get_stylesheet_directory_uri());
 define('TC_GSAP_VERSION', '3.12.5');
@@ -30,9 +30,12 @@ function tc_theme_enqueue_assets() {
     wp_enqueue_script('gsap-scrolltrigger', 'https://cdn.jsdelivr.net/npm/gsap@' . TC_GSAP_VERSION . '/dist/ScrollTrigger.min.js', ['gsap-core'], TC_GSAP_VERSION, true);
     wp_enqueue_script('tc-theme-main', TC_THEME_URI . '/assets/js/main.js', ['gsap-scrolltrigger'], TC_THEME_VERSION, true);
     wp_enqueue_script('tc-nav-scroll-state', TC_THEME_URI . '/assets/js/nav-scroll-state.js', ['tc-theme-main'], TC_THEME_VERSION, true);
+    wp_enqueue_script('tc-mega-menu', TC_THEME_URI . '/assets/js/mega-menu.js', ['tc-theme-main'], TC_THEME_VERSION, true);
+    wp_enqueue_script('tc-whatsapp-fab', TC_THEME_URI . '/assets/js/whatsapp-fab.js', ['tc-theme-main'], TC_THEME_VERSION, true);
 
     if (is_front_page()) {
         wp_enqueue_script('tc-hero-carousel', TC_THEME_URI . '/assets/js/hero-carousel.js', ['tc-theme-main'], TC_THEME_VERSION, true);
+        wp_enqueue_script('tc-brand-slider', TC_THEME_URI . '/assets/js/brand-slider.js', ['tc-theme-main'], TC_THEME_VERSION, true);
     }
 }
 add_action('wp_enqueue_scripts', 'tc_theme_enqueue_assets', 20);
@@ -69,6 +72,10 @@ if (!defined('TC_DISABLE_ROBOTS_LOCKDOWN') || !TC_DISABLE_ROBOTS_LOCKDOWN) {
 
 if (file_exists(TC_THEME_DIR . '/inc/acf-fields.php')) {
     require_once TC_THEME_DIR . '/inc/acf-fields.php';
+}
+
+if (file_exists(TC_THEME_DIR . '/inc/acf-fields-phase-2-2a.php')) {
+    require_once TC_THEME_DIR . '/inc/acf-fields-phase-2-2a.php';
 }
 
 function tc_theme_register_options_page() {

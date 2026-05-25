@@ -68,7 +68,15 @@ $tc_dark_logo_alt  = ( is_array( $tc_logo_dark ) && ! empty( $tc_logo_dark['alt'
                     $tc_link_url   = isset( $tc_link['url'] ) ? $tc_link['url'] : '#';
                     if ( '' === $tc_link_label ) { continue; }
                 ?>
+                    <?php
+                    $tc_slug_map = ['Structure essentials' => 'structure', 'Surfaces & finishes' => 'surfaces', 'Softs & decor' => 'softs'];
+                    $tc_slug = $tc_slug_map[$tc_link_label] ?? '';
+                    if ($tc_slug) :
+                    ?>
+                    <button type="button" data-megamenu-trigger="<?php echo esc_attr($tc_slug); ?>" aria-expanded="false" aria-controls="tc-megamenu-<?php echo esc_attr($tc_slug); ?>" style="background: transparent; border: 0; padding: 0; color: inherit; cursor: pointer; font: inherit; display: inline-flex; align-items: center; gap: 4px;"><?php echo esc_html( $tc_link_label ); ?><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg></button>
+                    <?php else : ?>
                     <a href="<?php echo esc_url( $tc_link_url ); ?>" style="color: inherit; text-decoration: none;"><?php echo esc_html( $tc_link_label ); ?></a>
+                    <?php endif; ?>
                 <?php endforeach; ?>
             <?php endif; ?>
 
@@ -167,6 +175,8 @@ $tc_dark_logo_alt  = ( is_array( $tc_logo_dark ) && ! empty( $tc_logo_dark['alt'
 .tc-nav.tc-nav--compact [data-logo-variant="white"] { display: none; }
 .tc-nav.tc-nav--compact [data-logo-variant="dark"] { display: inline-block !important; }
 .tc-nav a:focus-visible, .tc-nav button:focus-visible { outline: 2px solid #FFCD00; outline-offset: 2px; }
+[data-megamenu-trigger].is-open { background: #FFCD00 !important; color: #63666A !important; padding: 4px 10px !important; }
 .tc-mobile-menu.is-open { transform: translateX(0) !important; }
 #tc-mobile-menu-backdrop.is-visible { opacity: 1 !important; pointer-events: auto !important; }
 </style>
+<?php get_template_part('template-parts/mega-menu'); ?>

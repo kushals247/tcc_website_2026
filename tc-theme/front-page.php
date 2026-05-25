@@ -9,6 +9,8 @@ get_header();
 <div class="tc-homepage" style="font-family: 'Montserrat', system-ui, sans-serif;">
   <?php get_template_part('template-parts/hero-carousel'); ?>
   <?php get_template_part('template-parts/ecosystem-cards'); ?>
+  <?php get_template_part('template-parts/shop-by-room'); ?>
+  <?php get_template_part('template-parts/brand-partners'); ?>
 </div>
 <?php
 get_footer();
