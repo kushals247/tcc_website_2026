@@ -4,17 +4,28 @@
   "settings": {
     "color": {
       "palette": [
-        { "slug": "tc-gold", "color": "#C9A961", "name": "T&C Gold" },
-        { "slug": "tc-charcoal", "color": "#1A1A1A", "name": "T&C Charcoal" },
-        { "slug": "tc-warm-white", "color": "#FAF7F2", "name": "T&C Warm White" },
-        { "slug": "tc-stone", "color": "#8B8276", "name": "T&C Stone" },
-        { "slug": "tc-deep-green", "color": "#2D4A3E", "name": "T&C Deep Green" }
-      ]
+        { "slug": "tc-white", "color": "#FFFFFF", "name": "T&C White" },
+        { "slug": "tc-yellow", "color": "#FFCD00", "name": "T&C Yellow (Pantone 116 C)" },
+        { "slug": "tc-grey", "color": "#63666A", "name": "T&C Cool Gray (Pantone Cool Gray 10 C)" },
+        { "slug": "tc-grey-light", "color": "#F5F6F7", "name": "T&C Light Grey (subtle backgrounds)" },
+        { "slug": "tc-grey-border", "color": "#ECECEC", "name": "T&C Border Grey (dividers)" }
+      ],
+      "custom": false,
+      "customGradient": false
     },
     "typography": {
       "fontFamilies": [
-        { "slug": "primary", "name": "Primary", "fontFamily": "system-ui, -apple-system, sans-serif" },
-        { "slug": "display", "name": "Display", "fontFamily": "Georgia, serif" }
+        { "slug": "primary", "name": "Primary (Montserrat as Gotham fallback)", "fontFamily": "'Montserrat', 'Gotham', system-ui, -apple-system, sans-serif" },
+        { "slug": "display", "name": "Display (Montserrat Medium)", "fontFamily": "'Montserrat', 'Gotham', system-ui, -apple-system, sans-serif" }
+      ],
+      "fontSizes": [
+        { "slug": "sm", "size": "14px", "name": "Small" },
+        { "slug": "base", "size": "16px", "name": "Base" },
+        { "slug": "lg", "size": "18px", "name": "Large" },
+        { "slug": "xl", "size": "24px", "name": "Extra Large" },
+        { "slug": "2xl", "size": "32px", "name": "Display Small" },
+        { "slug": "3xl", "size": "44px", "name": "Display Medium" },
+        { "slug": "4xl", "size": "64px", "name": "Display Large" }
       ]
     },
     "spacing": {

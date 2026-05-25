@@ -1,4 +1,10 @@
-<?php /* Placeholder - full header built in Phase 2 */ ?>
+<?php
+/**
+ * tc-theme header template.
+ * Phase 2.1: delegates the visible header chrome to template-parts/nav-header.php.
+ */
+if (!defined('ABSPATH')) exit;
+?>
 <!doctype html>
 <html <?php language_attributes(); ?>>
 <head>
@@ -7,10 +13,7 @@
   <meta name="robots" content="noindex,nofollow">
   <?php wp_head(); ?>
 </head>
-<body <?php body_class(); ?>>
+<body <?php body_class(); ?> style="margin: 0; padding: 0; font-family: 'Montserrat', system-ui, sans-serif; color: #63666A; background: #FFFFFF;">
 <?php wp_body_open(); ?>
-<header class="site-header" style="padding: 1rem 1.5rem; border-bottom: 1px solid #eee; font-family: system-ui, sans-serif;">
-  <a href="<?php echo esc_url(home_url('/')); ?>" style="font-weight: 600; text-decoration: none; color: #1a1a1a;"><?php bloginfo('name'); ?></a>
-  <span style="color: #999; font-size: 13px; margin-left: 1rem;">- site under construction</span>
-</header>
+<?php get_template_part('template-parts/nav-header'); ?>
 <main class="site-main">

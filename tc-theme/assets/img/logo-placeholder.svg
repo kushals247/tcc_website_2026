@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 60" width="200" height="60" role="img" aria-label="Tile and Carpet Centre - Living in Style">
+  <g fill="none" stroke="#FFCD00" stroke-width="2.5">
+    <rect x="3" y="3" width="40" height="40"/>
+  </g>
+  <text x="23" y="32" font-family="Montserrat, sans-serif" font-size="22" font-weight="700" fill="currentColor" text-anchor="middle">T</text>
+  <text x="50" y="32" font-family="Montserrat, sans-serif" font-size="20" font-weight="500" fill="currentColor">&amp;</text>
+  <g>
+    <path d="M 90 23 a 17 17 0 1 0 0 0.01 z" fill="none" stroke="currentColor" stroke-width="2.5"/>
+    <circle cx="96" cy="23" r="4" fill="#FFCD00"/>
+  </g>
+  <text x="82" y="32" font-family="Montserrat, sans-serif" font-size="22" font-weight="700" fill="currentColor">C</text>
+  <text x="3" y="55" font-family="Montserrat, sans-serif" font-size="7" font-weight="500" fill="currentColor" letter-spacing="2">LIVING IN STYLE</text>
+</svg>

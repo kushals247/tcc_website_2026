@@ -5,15 +5,35 @@
 
 if (!defined('ABSPATH')) exit;
 
-define('TC_THEME_VERSION', '0.1.0');
+define('TC_THEME_VERSION', '0.2.0');
 define('TC_THEME_DIR', get_stylesheet_directory());
 define('TC_THEME_URI', get_stylesheet_directory_uri());
+define('TC_GSAP_VERSION', '3.12.5');
+
+function tc_theme_resource_hints($hints, $relation_type) {
+    if ('preconnect' === $relation_type) {
+        $hints[] = 'https://fonts.googleapis.com';
+        $hints[] = 'https://fonts.gstatic.com';
+    }
+    return $hints;
+}
+add_filter('wp_resource_hints', 'tc_theme_resource_hints', 10, 2);
 
 function tc_theme_enqueue_assets() {
-    wp_enqueue_style('blocksy-parent', get_template_directory_uri() . '/style.css');
-    wp_enqueue_style('tc-theme', get_stylesheet_uri(), ['blocksy-parent'], TC_THEME_VERSION);
+    wp_enqueue_style('tc-theme', get_stylesheet_uri(), [], TC_THEME_VERSION);
+    wp_enqueue_style('tc-montserrat', 'https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap', [], null);
+    wp_enqueue_style('tc-hero-fade', TC_THEME_URI . '/assets/css/hero-fade.css', ['tc-theme'], TC_THEME_VERSION);
+
+    // TODO Phase 5: Replace Tailwind Play CDN with a compiled tailwind.css build before launch. The Play CDN ships the JIT compiler (~400KB) and is not for production. See Phase 2.1 design spec section 3.
     wp_enqueue_script('tailwind-cdn', 'https://cdn.tailwindcss.com', [], '3.4.0', false);
-    wp_enqueue_script('tc-theme-main', TC_THEME_URI . '/assets/js/main.js', [], TC_THEME_VERSION, true);
+    wp_enqueue_script('gsap-core', 'https://cdn.jsdelivr.net/npm/gsap@' . TC_GSAP_VERSION . '/dist/gsap.min.js', [], TC_GSAP_VERSION, true);
+    wp_enqueue_script('gsap-scrolltrigger', 'https://cdn.jsdelivr.net/npm/gsap@' . TC_GSAP_VERSION . '/dist/ScrollTrigger.min.js', ['gsap-core'], TC_GSAP_VERSION, true);
+    wp_enqueue_script('tc-theme-main', TC_THEME_URI . '/assets/js/main.js', ['gsap-scrolltrigger'], TC_THEME_VERSION, true);
+    wp_enqueue_script('tc-nav-scroll-state', TC_THEME_URI . '/assets/js/nav-scroll-state.js', ['tc-theme-main'], TC_THEME_VERSION, true);
+
+    if (is_front_page()) {
+        wp_enqueue_script('tc-hero-carousel', TC_THEME_URI . '/assets/js/hero-carousel.js', ['tc-theme-main'], TC_THEME_VERSION, true);
+    }
 }
 add_action('wp_enqueue_scripts', 'tc_theme_enqueue_assets', 20);
 
@@ -43,4 +63,25 @@ add_filter('acf/settings/load_json', 'tc_theme_acf_json_load_point');
 function tc_theme_robots_txt($output, $public) {
     return "User-agent: *\nDisallow: /\n";
 }
-add_filter('robots_txt', 'tc_theme_robots_txt', 999, 2);
+if (!defined('TC_DISABLE_ROBOTS_LOCKDOWN') || !TC_DISABLE_ROBOTS_LOCKDOWN) {
+    add_filter('robots_txt', 'tc_theme_robots_txt', 999, 2);
+}
+
+if (file_exists(TC_THEME_DIR . '/inc/acf-fields.php')) {
+    require_once TC_THEME_DIR . '/inc/acf-fields.php';
+}
+
+function tc_theme_register_options_page() {
+    if (function_exists('acf_add_options_page')) {
+        acf_add_options_page([
+            'page_title' => 'T&C Site Header',
+            'menu_title' => 'Site Header',
+            'menu_slug'  => 'tc-site-header',
+            'capability' => 'manage_options',
+            'redirect'   => false,
+            'icon_url'   => 'dashicons-menu',
+            'position'   => 30,
+        ]);
+    }
+}
+add_action('acf/init', 'tc_theme_register_options_page');
