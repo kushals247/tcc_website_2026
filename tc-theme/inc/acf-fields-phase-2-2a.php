@@ -287,7 +287,7 @@ add_action('acf/init', function() {
                         'key' => 'field_bp_logo_image',
                         'label' => 'Logo',
                         'name' => 'logo',
-                        'type' => 'image',
+                        'type' => 'url',
                         'return_format' => 'array',
                     ),
                     array(

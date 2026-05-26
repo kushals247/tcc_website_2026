@@ -26,6 +26,7 @@ add_action('init', function() {
         'menu_position' => 25,
         'show_in_rest' => true,
         'capability_type' => 'post',
+    'query_var' => false,
         'hierarchical' => false,
     ]);
 });
