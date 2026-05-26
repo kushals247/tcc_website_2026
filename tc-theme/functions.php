@@ -109,6 +109,9 @@ if (file_exists(TC_THEME_DIR . '/inc/acf-fields-quote.php')) {
 if (file_exists(TC_THEME_DIR . '/inc/acf-fields-legal.php')) {
     require_once TC_THEME_DIR . '/inc/acf-fields-legal.php';
 }
+if (file_exists(TC_THEME_DIR . '/inc/theme-settings.php')) {
+    require_once TC_THEME_DIR . '/inc/theme-settings.php';
+}
 
 function tc_theme_register_options_page() {
     if (function_exists('acf_add_options_page')) {
