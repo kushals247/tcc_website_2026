@@ -42,7 +42,7 @@ $tc_dark_logo_alt  = ( is_array( $tc_logo_dark ) && ! empty( $tc_logo_dark['alt'
     id="tc-nav"
     class="tc-nav tc-nav--transparent"
     aria-label="Primary"
-    style="position: fixed; top: 0; left: 0; right: 0; z-index: 50; transition: background-color 300ms ease, height 300ms ease, color 300ms ease; height: 80px; background-color: transparent; color: #FFFFFF; font-family: 'Montserrat', system-ui, sans-serif;"
+    style="position: fixed; left: 0; right: 0; z-index: 50; transition: background-color 300ms ease, height 300ms ease, color 300ms ease; height: 60px; background-color: rgba(58, 61, 64, 0.9); color: #FFFFFF; font-family: 'Montserrat', system-ui, sans-serif;"
 >
     <div class="tc-nav__inner" style="max-width: 1440px; margin: 0 auto; padding: 0 28px; height: 100%; display: flex; align-items: center; justify-content: space-between;">
 
@@ -51,7 +51,7 @@ $tc_dark_logo_alt  = ( is_array( $tc_logo_dark ) && ! empty( $tc_logo_dark['alt'
                 src="<?php echo esc_url( $tc_white_logo_url ); ?>"
                 alt="<?php echo esc_attr( $tc_white_logo_alt ); ?>"
                 data-logo-variant="white"
-                style="height: 36px; width: auto; display: inline-block;"
+                style="height: 36px; width: auto;"
             />
             <img
                 src="<?php echo esc_url( $tc_dark_logo_url ); ?>"

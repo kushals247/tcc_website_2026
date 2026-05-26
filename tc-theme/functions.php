@@ -26,6 +26,8 @@ function tc_theme_enqueue_assets() {
 
     // Tailwind production build (compiled v3.4.17 — replaces Play CDN as of Phase 4a launch readiness)
     wp_enqueue_style('tc-tailwind', TC_THEME_URI . '/assets/css/tc-tailwind.css', [], TC_THEME_VERSION);
+    // Tabler Icons webfont — used for nav/contact/WhatsApp icons across templates
+    wp_enqueue_style('tabler-icons', 'https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.24.0/dist/tabler-icons.min.css', [], '3.24.0');
     wp_enqueue_script('gsap-core', 'https://cdn.jsdelivr.net/npm/gsap@' . TC_GSAP_VERSION . '/dist/gsap.min.js', [], TC_GSAP_VERSION, true);
     wp_enqueue_script('gsap-scrolltrigger', 'https://cdn.jsdelivr.net/npm/gsap@' . TC_GSAP_VERSION . '/dist/ScrollTrigger.min.js', ['gsap-core'], TC_GSAP_VERSION, true);
     wp_enqueue_script('tc-theme-main', TC_THEME_URI . '/assets/js/main.js', ['gsap-scrolltrigger'], TC_THEME_VERSION, true);
