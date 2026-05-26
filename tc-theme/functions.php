@@ -5,7 +5,7 @@
 
 if (!defined('ABSPATH')) exit;
 
-define('TC_THEME_VERSION', '0.8.0');
+define('TC_THEME_VERSION', '0.9.0');
 define('TC_THEME_DIR', get_stylesheet_directory());
 define('TC_THEME_URI', get_stylesheet_directory_uri());
 define('TC_GSAP_VERSION', '3.12.5');
@@ -101,6 +101,10 @@ if (file_exists(TC_THEME_DIR . '/inc/cpt-brand.php')) {
 
 if (file_exists(TC_THEME_DIR . '/inc/acf-fields-brand.php')) {
     require_once TC_THEME_DIR . '/inc/acf-fields-brand.php';
+}
+
+if (file_exists(TC_THEME_DIR . '/inc/acf-fields-quote.php')) {
+    require_once TC_THEME_DIR . '/inc/acf-fields-quote.php';
 }
 
 function tc_theme_register_options_page() {
