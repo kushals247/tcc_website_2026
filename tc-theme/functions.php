@@ -5,7 +5,7 @@
 
 if (!defined('ABSPATH')) exit;
 
-define('TC_THEME_VERSION', '0.9.0');
+define('TC_THEME_VERSION', '1.0.0');
 define('TC_THEME_DIR', get_stylesheet_directory());
 define('TC_THEME_URI', get_stylesheet_directory_uri());
 define('TC_GSAP_VERSION', '3.12.5');
@@ -24,8 +24,8 @@ function tc_theme_enqueue_assets() {
     wp_enqueue_style('tc-montserrat', 'https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap', [], null);
     wp_enqueue_style('tc-hero-fade', TC_THEME_URI . '/assets/css/hero-fade.css', ['tc-theme'], TC_THEME_VERSION);
 
-    // TODO Phase 5: Replace Tailwind Play CDN with a compiled tailwind.css build before launch. The Play CDN ships the JIT compiler (~400KB) and is not for production. See Phase 2.1 design spec section 3.
-    wp_enqueue_script('tailwind-cdn', 'https://cdn.tailwindcss.com', [], '3.4.0', false);
+    // Tailwind production build (compiled v3.4.17 — replaces Play CDN as of Phase 4a launch readiness)
+    wp_enqueue_style('tc-tailwind', TC_THEME_URI . '/assets/css/tc-tailwind.css', [], TC_THEME_VERSION);
     wp_enqueue_script('gsap-core', 'https://cdn.jsdelivr.net/npm/gsap@' . TC_GSAP_VERSION . '/dist/gsap.min.js', [], TC_GSAP_VERSION, true);
     wp_enqueue_script('gsap-scrolltrigger', 'https://cdn.jsdelivr.net/npm/gsap@' . TC_GSAP_VERSION . '/dist/ScrollTrigger.min.js', ['gsap-core'], TC_GSAP_VERSION, true);
     wp_enqueue_script('tc-theme-main', TC_THEME_URI . '/assets/js/main.js', ['gsap-scrolltrigger'], TC_THEME_VERSION, true);
@@ -105,6 +105,9 @@ if (file_exists(TC_THEME_DIR . '/inc/acf-fields-brand.php')) {
 
 if (file_exists(TC_THEME_DIR . '/inc/acf-fields-quote.php')) {
     require_once TC_THEME_DIR . '/inc/acf-fields-quote.php';
+}
+if (file_exists(TC_THEME_DIR . '/inc/acf-fields-legal.php')) {
+    require_once TC_THEME_DIR . '/inc/acf-fields-legal.php';
 }
 
 function tc_theme_register_options_page() {
