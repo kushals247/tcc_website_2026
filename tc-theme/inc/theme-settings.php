@@ -172,6 +172,83 @@ add_action('acf/init', function () {
                     'medium' => 'Medium (6px)',
                     'full' => 'Full (pill)',
                 ],
+
+            // ---------- SEO & Analytics ----------
+            [
+                'key' => 'field_ts_seo_tab',
+                'label' => 'SEO & Analytics',
+                'type' => 'tab',
+            ],
+            [
+                'key' => 'field_ts_seo_org_name',
+                'label' => 'Organisation name',
+                'name' => 'ts_seo_org_name',
+                'type' => 'text',
+                'default_value' => 'Tile & Carpet Centre',
+                'instructions' => 'Used by Yoast for Organisation schema (knowledge graph).',
+            ],
+            [
+                'key' => 'field_ts_seo_org_legal_name',
+                'label' => 'Legal company name',
+                'name' => 'ts_seo_org_legal_name',
+                'type' => 'text',
+                'default_value' => 'Tile & Carpet Centre Ltd',
+            ],
+            [
+                'key' => 'field_ts_seo_org_logo_url',
+                'label' => 'Organisation logo URL',
+                'name' => 'ts_seo_org_logo_url',
+                'type' => 'url',
+                'default_value' => 'https://placehold.co/300x120/3A3D40/FFCD00?text=T%26C+Logo&font=montserrat',
+                'instructions' => 'Square or wide logo for Google knowledge panel. ~300–600px recommended.',
+            ],
+            [
+                'key' => 'field_ts_seo_org_description',
+                'label' => 'Organisation description',
+                'name' => 'ts_seo_org_description',
+                'type' => 'textarea',
+                'default_value' => 'Tile & Carpet Centre is Kenya\'s leading building materials, surfaces, and interiors specialist. Vertically integrated across structural essentials, surfaces and finishes, and softs and decor.',
+            ],
+            [
+                'key' => 'field_ts_seo_default_og_image',
+                'label' => 'Default Open Graph image',
+                'name' => 'ts_seo_default_og_image',
+                'type' => 'url',
+                'default_value' => 'https://placehold.co/1200x630/3A3D40/FFCD00?text=Tile+%26+Carpet+Centre&font=montserrat',
+                'instructions' => 'Used when sharing pages on social media. 1200x630px recommended. Yoast falls back to this when a page does not set its own OG image.',
+            ],
+            [
+                'key' => 'field_ts_seo_twitter_handle',
+                'label' => 'Twitter / X handle',
+                'name' => 'ts_seo_twitter_handle',
+                'type' => 'text',
+                'placeholder' => '@tileandcarpet',
+                'instructions' => 'Optional. Include the @ symbol.',
+            ],
+            [
+                'key' => 'field_ts_seo_search_console_html',
+                'label' => 'Google Search Console verification meta tag',
+                'name' => 'ts_seo_search_console_html',
+                'type' => 'textarea',
+                'instructions' => 'Paste the full <meta name="google-site-verification" ...> tag from Search Console. Outputs in <head> on every page.',
+            ],
+            [
+                'key' => 'field_ts_analytics_ga4_id',
+                'label' => 'GA4 Measurement ID',
+                'name' => 'ts_analytics_ga4_id',
+                'type' => 'text',
+                'placeholder' => 'G-XXXXXXXXXX',
+                'instructions' => 'From Google Analytics > Admin > Data streams. Begins with G-.',
+            ],
+            [
+                'key' => 'field_ts_analytics_enabled',
+                'label' => 'Enable GA4 tracking',
+                'name' => 'ts_analytics_enabled',
+                'type' => 'true_false',
+                'default_value' => 0,
+                'ui' => 1,
+                'instructions' => 'When enabled, GA4 only loads after visitors accept the cookie banner.',
+            ],
                 'default_value' => 'none',
             ],
         ],
@@ -332,3 +409,64 @@ add_action('wp_enqueue_scripts', function () {
         wp_deregister_style('tc-montserrat');
     }
 }, 100);
+
+// ============================================================
+// 7. Output Search Console verification meta + LocalBusiness JSON-LD
+// ============================================================
+add_action('wp_head', function () {
+    if (!function_exists('get_field')) return;
+
+    // Search Console verification tag
+    $sc = get_field('ts_seo_search_console_html', 'tc-theme-settings');
+    if (!empty($sc) && str_contains($sc, 'google-site-verification')) {
+        echo "\n" . wp_kses($sc, ['meta' => ['name' => [], 'content' => []]]) . "\n";
+    }
+
+    // LocalBusiness schema for T&C branches (from Store Locator ACF)
+    $locator_page = get_page_by_path('store-locator');
+    if (!$locator_page) return;
+    $tc_branches = get_field('locator_tc_branches', $locator_page->ID);
+    if (!is_array($tc_branches) || empty($tc_branches)) return;
+
+    $org_name = get_field('ts_seo_org_name', 'tc-theme-settings') ?: 'Tile & Carpet Centre';
+    $org_url = home_url();
+
+    $businesses = [];
+    foreach ($tc_branches as $b) {
+        $name = $b['name'] ?? '';
+        $address = $b['address'] ?? '';
+        $phone = $b['phone'] ?? '';
+        $hours = $b['hours'] ?? '';
+        if (!$name) continue;
+
+        // Parse address heuristically (lines: street, city, country)
+        $lines = array_filter(array_map('trim', explode("\n", $address)));
+        $street = $lines[0] ?? '';
+        $locality = $lines[count($lines) - 2] ?? 'Nairobi';
+        $region = 'Kenya';
+
+        $entry = [
+            '@context' => 'https://schema.org',
+            '@type' => 'Store',
+            'name' => $org_name . ' — ' . $name,
+            'parentOrganization' => $org_name,
+            'url' => $org_url . '/store-locator/',
+            'address' => [
+                '@type' => 'PostalAddress',
+                'streetAddress' => $street,
+                'addressLocality' => $locality,
+                'addressCountry' => 'KE',
+            ],
+        ];
+        if (!empty($phone)) $entry['telephone'] = $phone;
+        if (!empty($hours)) $entry['openingHours'] = trim(preg_replace('/\s+/', ' ', $hours));
+
+        $businesses[] = $entry;
+    }
+
+    if (!empty($businesses)) {
+        echo "\n<script type=\"application/ld+json\" id=\"tc-localbusiness\">";
+        echo wp_json_encode($businesses, JSON_UNESCAPED_SLASHES);
+        echo "</script>\n";
+    }
+}, 5);
