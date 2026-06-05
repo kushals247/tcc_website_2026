@@ -62,10 +62,10 @@ $resolve_image = function($img) {
     return (string)$img;
 };
 ?>
-<section id="tc-hero" class="tc-hero" data-autoplay-seconds="<?php echo esc_attr((int)$autoplay); ?>" style="position:relative;height:100vh;min-height:560px;background:#FFFFFF;overflow:hidden;font-family:'Montserrat',system-ui,sans-serif;">
+<section id="tc-hero" class="tc-hero" data-autoplay-seconds="<?php echo esc_attr((int)$autoplay); ?>" style="position:relative;height:95vh;min-height:560px;background:#FFFFFF;overflow:hidden;font-family:'Montserrat',system-ui,sans-serif;">
     <div class="tc-hero__inner" data-tc-hero-grid style="display:grid;grid-template-columns:1fr;height:100%;">
 
-        <div class="tc-hero__text" style="display:flex;flex-direction:column;justify-content:center;padding:96px 32px 48px;color:#63666A;">
+        <div class="tc-hero__text" style="display:flex;flex-direction:column;justify-content:center;padding:96px 32px 48px;color:#63666A;background:#ededee;">
             <span id="tc-hero-eyebrow" aria-live="polite" class="tc-hero__eyebrow" data-tc-eyebrow style="display:inline-block;align-self:flex-start;background:#FFCD00;color:#63666A;padding:7px 14px;font-size:11px;letter-spacing:0.18em;font-weight:500;text-transform:uppercase;margin-bottom:24px;opacity:0;transform:translateY(20px);"><?php echo esc_html($slides[0]['slide_eyebrow_text'] ?? ''); ?></span>
 
             <h1 class="tc-hero__headline" data-tc-headline style="font-size:clamp(32px,5vw,48px);font-weight:500;line-height:1.05;letter-spacing:-0.01em;margin:0 0 16px;max-width:540px;opacity:0;transform:translateY(24px);"><?php echo esc_html($hero_headline); ?></h1>
@@ -120,7 +120,7 @@ $resolve_image = function($img) {
 
 <style>
 @media (min-width: 768px) {
-    [data-tc-hero-grid] { grid-template-columns: 1fr 1fr !important; }
+    [data-tc-hero-grid] { grid-template-columns: 2fr 3fr !important; }
     .tc-hero__text { padding: 96px 48px 48px !important; }
 }
 .tc-hero a:focus-visible, .tc-hero button:focus-visible { outline: 2px solid #FFCD00; outline-offset: 2px; }

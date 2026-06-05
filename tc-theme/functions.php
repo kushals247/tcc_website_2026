@@ -129,3 +129,19 @@ function tc_theme_register_options_page() {
     }
 }
 add_action('acf/init', 'tc_theme_register_options_page');
+
+// Sub-category page redirects (when categories move between pillars)
+add_action('template_redirect', function () {
+    if (function_exists('tc_subcat_redirects')) return;
+});
+function tc_subcat_redirects() {
+    $redirects = [
+        '/structure-essentials/gypsum/' => '/surfaces-finishes/gypsum/',
+    ];
+    $path = strtok($_SERVER['REQUEST_URI'], '?');
+    if (isset($redirects[$path])) {
+        wp_safe_redirect(home_url($redirects[$path]), 301);
+        exit;
+    }
+}
+add_action('template_redirect', 'tc_subcat_redirects', 1);
