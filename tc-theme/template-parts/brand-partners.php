@@ -6,14 +6,49 @@
 if (!defined('ABSPATH')) exit;
 
 $view_all_url = function_exists('get_field') ? (get_field('brand_strip_view_all_url') ?: home_url('/brands/')) : home_url('/brands/');
-$logos = function_exists('get_field') ? (get_field('brand_strip_logos') ?: []) : [];
-
+// Query brand CPT for featured-on-homepage brands, ordered by featured_order then alphabetical
+$featured_query = new WP_Query([
+    'post_type' => 'brand',
+    'post_status' => 'publish',
+    'posts_per_page' => -1,
+    'meta_query' => [
+        [
+            'key' => 'brand_featured_on_homepage',
+            'value' => '1',
+            'compare' => '=',
+        ],
+    ],
+    'meta_key' => 'brand_featured_order',
+    'orderby' => ['meta_value_num' => 'ASC', 'title' => 'ASC'],
+    'no_found_rows' => true,
+]);
+$logos = [];
+if ($featured_query->have_posts()) {
+    while ($featured_query->have_posts()) {
+        $featured_query->the_post();
+        $bid = get_the_ID();
+        $logo_url = get_field('brand_logo', $bid);
+        // Use brand's CPT permalink (the /our-brands/{slug}/ page)
+        $logos[] = [
+            'name' => get_the_title(),
+            'logo' => is_string($logo_url) && $logo_url ? ['url' => $logo_url] : null,
+            'url' => get_permalink($bid),
+            'keep_color' => false,
+        ];
+    }
+    wp_reset_postdata();
+}
+// Fallback: legacy ACF repeater (kept for backwards compatibility; safe to remove later)
 if (empty($logos)) {
-    $defaults = ['Hansgrohe', 'Duravit', 'Geberit', 'Franke', 'TopRoof', 'TopTank', 'Tactile', 'Top-Pipe', 'Kalekim', 'Hettich', 'Balta', 'Rubi'];
-    foreach ($defaults as $name) {
-        $logos[] = ['name' => $name, 'logo' => null, 'url' => '#', 'keep_color' => false];
+    $legacy = function_exists('get_field') ? (get_field('brand_strip_logos') ?: []) : [];
+    if (!empty($legacy)) {
+        foreach ($legacy as $row) {
+            $url = is_array($row['url'] ?? null) ? ($row['url']['url'] ?? '#') : ($row['url'] ?? '#');
+            $logos[] = ['name' => $row['name'] ?? '', 'logo' => is_array($row['logo'] ?? null) && !empty($row['logo']['url']) ? $row['logo'] : (is_string($row['logo'] ?? null) && $row['logo'] ? ['url' => $row['logo']] : null), 'url' => $url, 'keep_color' => false];
+        }
     }
 }
+if (empty($logos)) return;
 $doubled = array_merge($logos, $logos);
 ?>
 <section class="tc-bp" style="background: #F5F6F7; padding: 48px 0 64px; font-family: 'Montserrat', system-ui, sans-serif;">

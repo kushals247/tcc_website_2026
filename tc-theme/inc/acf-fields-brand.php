@@ -119,6 +119,23 @@ add_action('acf/init', function() {
                 'type' => 'true_false',
                 'default_value' => 0,
             ],
+            [
+                'key' => 'field_brand_featured_on_homepage',
+                'label' => 'Featured on homepage',
+                'name' => 'brand_featured_on_homepage',
+                'type' => 'true_false',
+                'default_value' => 0,
+                'ui' => 1,
+                'instructions' => 'When ON, this brand appears in the Brand Partners strip on the homepage.',
+            ],
+            [
+                'key' => 'field_brand_featured_order',
+                'label' => 'Featured order',
+                'name' => 'brand_featured_order',
+                'type' => 'number',
+                'default_value' => 100,
+                'instructions' => 'Lower numbers display first. Use 10, 20, 30 to leave space for reordering. Ties broken alphabetically.',
+            ],
         ],
         'location' => [
             [

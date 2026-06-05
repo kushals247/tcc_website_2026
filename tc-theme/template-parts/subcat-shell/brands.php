@@ -4,15 +4,38 @@ $eyebrow = get_field('subcat_brands_eyebrow') ?: 'OUR PARTNERS';
 $heading = get_field('subcat_brands_heading') ?: 'Brands we carry for this category';
 $ecosystem = get_field('subcat_parent_ecosystem');
 
-$home_id = get_option('page_on_front');
-$all_brands = $home_id ? get_field('brand_strip_logos', $home_id) : null;
-if (!$all_brands || !$ecosystem) return;
+if (!$ecosystem) return;
 
-$brands = array_filter($all_brands, function($b) use ($ecosystem) {
-    $ecos = $b['ecosystems'] ?? [];
-    return is_array($ecos) && in_array($ecosystem, $ecos, true);
-});
-
+// Query brand CPT for brands tagged with this ecosystem (via brand_ecosystems checkbox field)
+$brand_query = new WP_Query([
+    'post_type' => 'brand',
+    'post_status' => 'publish',
+    'posts_per_page' => -1,
+    'meta_query' => [
+        [
+            'key' => 'brand_ecosystems',
+            'value' => '"' . $ecosystem . '"',
+            'compare' => 'LIKE',
+        ],
+    ],
+    'meta_key' => 'brand_featured_order',
+    'orderby' => ['meta_value_num' => 'ASC', 'title' => 'ASC'],
+    'no_found_rows' => true,
+]);
+$brands = [];
+if ($brand_query->have_posts()) {
+    while ($brand_query->have_posts()) {
+        $brand_query->the_post();
+        $bid = get_the_ID();
+        $brands[] = [
+            'name' => get_the_title(),
+            'logo' => get_field('brand_logo', $bid),
+            'url' => get_permalink($bid),
+            'ecosystems' => get_field('brand_ecosystems', $bid),
+        ];
+    }
+    wp_reset_postdata();
+}
 if (empty($brands)) return;
 ?>
 <section class="tc-subcat-brands bg-white py-20 md:py-24">
