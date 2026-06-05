@@ -37,7 +37,7 @@ $use_fallback = count($posts) === 0;
             <?php endforeach; ?>
         <?php else: ?>
             <?php foreach ($posts as $post): setup_postdata($post);
-                $thumb = get_the_post_thumbnail_url($post, 'medium_large');
+                $hero = get_field('article_hero_image', $post->ID); $thumb = (is_string($hero) && $hero) ? $hero : get_the_post_thumbnail_url($post, 'medium_large');
             ?>
                 <a href="<?php echo esc_url(get_permalink($post)); ?>" class="group block bg-white border border-[#ECECEC] hover:border-[#FFCD00] transition-all duration-300 hover:-translate-y-0.5" data-reveal="card">
                     <?php if ($thumb): ?><div class="aspect-[3/2] overflow-hidden bg-[#F5F6F7]"><img src="<?php echo esc_url($thumb); ?>" alt="<?php echo esc_attr(get_the_title($post)); ?>" class="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-500" loading="lazy"></div><?php endif; ?>

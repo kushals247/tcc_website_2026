@@ -16,7 +16,7 @@ if (count($posts) >= 4) {
     foreach ($posts as $p) {
         $cats = get_the_category($p->ID);
         $cards[] = [
-            'image' => get_the_post_thumbnail_url($p->ID, 'large') ?: '',
+            'image' => (function($pid) { $hero = function_exists('get_field') ? get_field('article_hero_image', $pid) : ''; return (is_string($hero) && $hero) ? $hero : (get_the_post_thumbnail_url($pid, 'large') ?: ''); })($p->ID),
             'category' => !empty($cats) ? $cats[0]->name : 'Article',
             'title' => get_the_title($p->ID),
             'excerpt' => has_excerpt($p->ID) ? get_the_excerpt($p->ID) : wp_trim_words(strip_tags($p->post_content), 22),

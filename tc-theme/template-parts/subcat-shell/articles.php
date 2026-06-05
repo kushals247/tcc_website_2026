@@ -24,7 +24,7 @@ if (empty($posts)) return;
         </div>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-3.5">
             <?php foreach ($posts as $post): setup_postdata($post);
-                $thumb = get_the_post_thumbnail_url($post, 'medium_large');
+                $hero = get_field('article_hero_image', $post->ID); $thumb = (is_string($hero) && $hero) ? $hero : get_the_post_thumbnail_url($post, 'medium_large');
                 $cats = get_the_category($post->ID);
                 $cat_label = !empty($cats) ? $cats[0]->name : '';
             ?>

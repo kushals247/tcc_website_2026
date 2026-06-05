@@ -29,7 +29,7 @@ $found = (int) $wp_query->found_posts;
             <?php if (have_posts()): ?>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3.5">
                     <?php while (have_posts()): the_post();
-                        $thumb = get_the_post_thumbnail_url(get_the_ID(), 'medium_large') ?: 'https://placehold.co/800x533/F5F6F7/63666A?text=' . rawurlencode(get_the_title()) . '&font=montserrat';
+                        $hero = function_exists('get_field') ? get_field('article_hero_image') : ''; $thumb = (is_string($hero) && $hero) ? $hero : (get_the_post_thumbnail_url(get_the_ID(), 'medium_large') ?: 'https://placehold.co/800x533/F5F6F7/63666A?text=' . rawurlencode(get_the_title()) . '&font=montserrat');
                         $pt = get_post_type_object(get_post_type());
                         $type_label = $pt ? $pt->labels->singular_name : '';
                     ?>
