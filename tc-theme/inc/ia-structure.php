@@ -16,7 +16,7 @@ function tc_get_ia_structure() {
                 'mixers-showers-and-taps' => ['name' => 'Mixers, Showers & Taps', 'icon' => 'droplet', 'l2' => [
                     'plumbing-valves' => ['name' => 'Plumbing Valves'],
                 ]],
-                'plumbing-fittings' => ['name' => 'Plumbing Fittings', 'icon' => 'pipe', 'l2' => [
+                'plumbing-fittings' => ['name' => 'Plumbing Fittings', 'icon' => 'cylinder', 'l2' => [
                     'pumps' => ['name' => 'Pumps'],
                     'valves' => ['name' => 'Valves'],
                     'accessories' => ['name' => 'Accessories'],
@@ -42,7 +42,7 @@ function tc_get_ia_structure() {
                 'lighting' => ['name' => 'Lighting', 'icon' => 'bulb', 'l2' => [
                     'switches-and-sockets' => ['name' => 'Switches & Sockets'],
                 ]],
-                'ironmongery' => ['name' => 'Ironmongery', 'icon' => 'screw', 'l2' => [
+                'ironmongery' => ['name' => 'Ironmongery', 'icon' => 'bolt', 'l2' => [
                 ]],
                 'hvac' => ['name' => 'HVAC', 'icon' => 'wind', 'l2' => [
                 ]],
@@ -50,7 +50,7 @@ function tc_get_ia_structure() {
                     'corrugated-roofing' => ['name' => 'Corrugated Roofing'],
                     'stone-coated-roofing' => ['name' => 'Stone-coated Roofing'],
                 ]],
-                'piping-systems' => ['name' => 'Piping Systems', 'icon' => 'pipe', 'l2' => [
+                'piping-systems' => ['name' => 'Piping Systems', 'icon' => 'cylinder', 'l2' => [
                     'hdpe-pipes' => ['name' => 'HDPE Pipes'],
                     'hdpe-fabricated-fittings' => ['name' => 'HDPE Fabricated Fittings'],
                     'dwc-pipes' => ['name' => 'DWC Pipes'],
@@ -127,7 +127,7 @@ function tc_get_ia_structure() {
                 ]],
                 'bathroom-accessories' => ['name' => 'Bathroom Accessories', 'icon' => 'tools-kitchen-2', 'l2' => [
                 ]],
-                'tile-fitting-accessories' => ['name' => 'Tile Fitting Accessories', 'icon' => 'screw', 'l2' => [
+                'tile-fitting-accessories' => ['name' => 'Tile Fitting Accessories', 'icon' => 'tool', 'l2' => [
                 ]],
                 'flooring' => ['name' => 'Flooring', 'icon' => 'grid-3x3', 'l2' => [
                     'wpc' => ['name' => 'WPC'],
@@ -155,7 +155,7 @@ function tc_get_ia_structure() {
             'eyebrow' => 'DECORATE',
             'description' => 'Furniture, fabrics, lighting and the layers that make a space.',
             'l1' => [
-                'carpets' => ['name' => 'Carpets', 'icon' => 'rug', 'l2' => [
+                'carpets' => ['name' => 'Carpets', 'icon' => 'grain', 'l2' => [
                     'rugs' => ['name' => 'Rugs'],
                     'tiles' => ['name' => 'Tiles'],
                     'wall-to-wall' => ['name' => 'Wall to Wall'],
@@ -204,7 +204,7 @@ function tc_get_ia_structure() {
                     'furnishing-fabric' => ['name' => 'Furnishing Fabric'],
                     'wall-paper' => ['name' => 'Wall Paper'],
                 ]],
-                'blinds' => ['name' => 'Blinds', 'icon' => 'blinds', 'l2' => [
+                'blinds' => ['name' => 'Blinds', 'icon' => 'layout-rows', 'l2' => [
                     'roman' => ['name' => 'Roman'],
                     'venetian' => ['name' => 'Venetian'],
                     'vertical' => ['name' => 'Vertical'],
