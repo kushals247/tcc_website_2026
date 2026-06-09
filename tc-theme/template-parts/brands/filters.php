@@ -29,7 +29,7 @@ $build_url = function($key, $value) use ($base_url) {
 };
 ?>
 <section class="tc-brands-filters bg-[#F5F6F7] py-12">
-    <div class="max-w-6xl mx-auto px-6">
+    <div class="max-w-5xl mx-auto px-6">
         <?php if ($intro): ?>
             <div class="text-base text-[#63666A] leading-relaxed text-center mb-8 max-w-3xl mx-auto"><?php echo wp_kses_post($intro); ?></div>
         <?php endif; ?>

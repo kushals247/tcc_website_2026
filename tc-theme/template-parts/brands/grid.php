@@ -66,7 +66,7 @@ $base_url = get_permalink();
 $clear_url = $base_url;
 ?>
 <section class="tc-brands-grid bg-white py-16 md:py-20">
-    <div class="max-w-6xl mx-auto px-6">
+    <div class="max-w-5xl mx-auto px-6">
         <?php if (!$query->have_posts()): ?>
             <p class="text-[#63666A] text-center py-12">No brands match these filters.</p>
             <p class="text-center"><a href="<?php echo esc_url($clear_url); ?>" class="text-[#FFCD00] border-b border-[#FFCD00] hover:opacity-70 transition-opacity">Clear filters</a></p>
@@ -90,11 +90,11 @@ $clear_url = $base_url;
                         <?php if ($is_inhouse): ?>
                             <span class="absolute top-2 right-2 text-[10px] tracking-[0.1em] uppercase bg-[#FFCD00] text-[#3A3D40] px-2 py-1">T&amp;C Original</span>
                         <?php endif; ?>
-                        <div class="h-20 flex items-center justify-center">
+                        <div class="h-20 flex items-center justify-center bg-[#F5F6F7] px-6 py-3">
                             <?php if ($logo_url): ?>
-                                <img src="<?php echo esc_url($logo_url); ?>" alt="<?php echo esc_attr($title); ?> logo" class="max-h-16 mx-auto" loading="lazy">
+                                <img src="<?php echo esc_url($logo_url); ?>" alt="<?php echo esc_attr($title); ?> logo" class="max-h-12 max-w-full w-auto object-contain" loading="lazy">
                             <?php else: ?>
-                                <span class="inline-flex items-center justify-center w-16 h-16 bg-[#FFCD00] rounded-full text-2xl font-medium text-[#3A3D40] mx-auto"><?php echo esc_html($first_letter); ?></span>
+                                <span class="inline-flex items-center justify-center w-14 h-14 bg-[#FFCD00] rounded-full text-2xl font-medium text-[#3A3D40]"><?php echo esc_html($first_letter); ?></span>
                             <?php endif; ?>
                         </div>
                         <h3 class="text-base font-medium text-[#3A3D40] text-center mt-4"><?php echo esc_html($title); ?></h3>
