@@ -21,12 +21,12 @@ $eyebrow = get_field('brand_eyebrow') ?: 'BRAND';
         <span class="mx-2">/</span>
         <span><?php echo esc_html(get_the_title()); ?></span>
     </div>
-    <?php if ($logo_url): ?>
-    <div class="absolute top-6 md:top-8 right-6 md:right-10 z-10 inline-block bg-white p-3">
-        <img src="<?php echo esc_url($logo_url); ?>" alt="<?php echo esc_attr(get_the_title()); ?> logo" class="max-h-10 w-auto">
-    </div>
-    <?php endif; ?>
     <div class="relative z-10 max-w-5xl mx-auto px-6 pb-12 md:pb-16 w-full">
+        <?php if ($logo_url): ?>
+            <div class="inline-block bg-white px-3 py-2 mb-4">
+                <img src="<?php echo esc_url($logo_url); ?>" alt="<?php echo esc_attr(get_the_title()); ?> logo" class="max-h-10 w-auto block">
+            </div>
+        <?php endif; ?>
         <?php if ($eyebrow): ?>
             <p class="text-xs tracking-[0.2em] uppercase text-[#FFCD00] font-medium mb-3"><?php echo esc_html($eyebrow); ?></p>
         <?php endif; ?>
