@@ -114,6 +114,9 @@ if (file_exists(TC_THEME_DIR . '/inc/acf-fields-legal.php')) {
 if (file_exists(TC_THEME_DIR . '/inc/theme-settings.php')) {
     require_once TC_THEME_DIR . '/inc/theme-settings.php';
 }
+if (file_exists(TC_THEME_DIR . '/inc/ia-structure.php')) {
+    require_once TC_THEME_DIR . '/inc/ia-structure.php';
+}
 
 function tc_theme_register_options_page() {
     if (function_exists('acf_add_options_page')) {
@@ -130,18 +133,5 @@ function tc_theme_register_options_page() {
 }
 add_action('acf/init', 'tc_theme_register_options_page');
 
-// Sub-category page redirects (when categories move between pillars)
-add_action('template_redirect', function () {
-    if (function_exists('tc_subcat_redirects')) return;
-});
-function tc_subcat_redirects() {
-    $redirects = [
-        '/structure-essentials/gypsum/' => '/surfaces-finishes/gypsum/',
-    ];
-    $path = strtok($_SERVER['REQUEST_URI'], '?');
-    if (isset($redirects[$path])) {
-        wp_safe_redirect(home_url($redirects[$path]), 301);
-        exit;
-    }
-}
-add_action('template_redirect', 'tc_subcat_redirects', 1);
+// Sub-category page redirects: dropped on IA migration to PIM-driven structure (2026-06-09).
+// Old 25-subcat URLs intentionally return 404; new structure under tc_get_ia_structure() in inc/ia-structure.php.
