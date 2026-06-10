@@ -135,3 +135,31 @@ add_action('acf/init', 'tc_theme_register_options_page');
 
 // Sub-category page redirects: dropped on IA migration to PIM-driven structure (2026-06-09).
 // Old 25-subcat URLs intentionally return 404; new structure under tc_get_ia_structure() in inc/ia-structure.php.
+
+/**
+ * WooCommerce /product-category/<slug>/ -> matching IA page redirect (301).
+ * Ensures every category has a single canonical URL: the WP page under /<eco>/<l1>/<l2>/.
+ * The product_cat archive still exists for WC's internal queries but is never publicly addressed.
+ */
+function tc_redirect_product_cat_to_ia_page() {
+    if (!is_tax('product_cat')) return;
+    $term = get_queried_object();
+    if (!$term || !isset($term->slug)) return;
+    if (!function_exists('tc_get_ia_structure')) return;
+    $ia = tc_get_ia_structure();
+    foreach ($ia as $eco_slug => $eco) {
+        foreach ($eco['l1'] as $l1_slug => $l1) {
+            if ($l1_slug === $term->slug) {
+                wp_safe_redirect(home_url('/' . $eco_slug . '/' . $l1_slug . '/'), 301);
+                exit;
+            }
+            foreach ($l1['l2'] as $l2_slug => $l2) {
+                if ($l2_slug === $term->slug) {
+                    wp_safe_redirect(home_url('/' . $eco_slug . '/' . $l1_slug . '/' . $l2_slug . '/'), 301);
+                    exit;
+                }
+            }
+        }
+    }
+}
+add_action('template_redirect', 'tc_redirect_product_cat_to_ia_page', 1);
