@@ -1,9 +1,9 @@
 <?php
 /**
  * Sub-cat shell > products.
- * Auto-queries WooCommerce products by matching the current page slug to a product_cat term.
- * Falls back to the 'Products coming online soon' card if no products are tagged yet.
- * Manual override: set the ACF subcat_products_shortcode to use a custom shortcode instead.
+ * Custom WP_Query grid that auto-matches the current page slug to a product_cat term.
+ * Renders product cards in the IA visual style (white card, border, hover-lift, yellow accent).
+ * Manual override: set the ACF subcat_products_shortcode to inject a custom shortcode.
  */
 if (!defined('ABSPATH')) exit;
 
@@ -18,14 +18,18 @@ $post_id = get_queried_object_id();
 $page_slug = $post_id ? get_post_field('post_name', $post_id) : '';
 $cat_term = $page_slug ? get_term_by('slug', $page_slug, 'product_cat') : null;
 
-// Check if any products are tagged with this category
+$products_query = null;
 $has_products = false;
 if ($cat_term && !is_wp_error($cat_term)) {
-    $count_query = new WP_Query([
+    $paged = max(1, (int) get_query_var('paged', 1));
+    if ($paged < 2) $paged = max(1, (int) ($_GET['paged'] ?? 1));
+    $products_query = new WP_Query([
         'post_type' => 'product',
         'post_status' => 'publish',
-        'posts_per_page' => 1,
-        'fields' => 'ids',
+        'posts_per_page' => 24,
+        'paged' => $paged,
+        'orderby' => 'menu_order title',
+        'order' => 'ASC',
         'tax_query' => [[
             'taxonomy' => 'product_cat',
             'field' => 'term_id',
@@ -33,8 +37,7 @@ if ($cat_term && !is_wp_error($cat_term)) {
             'include_children' => true,
         ]],
     ]);
-    $has_products = $count_query->have_posts();
-    wp_reset_postdata();
+    $has_products = $products_query->have_posts();
 }
 ?>
 <section class="tc-subcat-products bg-[#F5F6F7] py-20 md:py-24">
@@ -44,10 +47,50 @@ if ($cat_term && !is_wp_error($cat_term)) {
         <?php if (!empty(trim((string) $override_shortcode))): ?>
             <div class="tc-subcat-products-wrapper"><?php echo do_shortcode($override_shortcode); ?></div>
 
-        <?php elseif ($has_products && $cat_term): ?>
-            <div class="tc-subcat-products-wrapper">
-                <?php echo do_shortcode('[products category="' . esc_attr($cat_term->slug) . '" limit="24" columns="3" paginate="true"]'); ?>
+        <?php elseif ($has_products && $products_query): ?>
+            <?php if ($cat_term && $products_query->found_posts > 0): ?>
+                <p class="text-sm text-[#63666A] text-center mb-8">Showing <?php echo esc_html(min(24, (int) $products_query->post_count)); ?> of <?php echo esc_html((int) $products_query->found_posts); ?> products</p>
+            <?php endif; ?>
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3.5">
+                <?php while ($products_query->have_posts()): $products_query->the_post();
+                    global $product; if (!$product) { $product = wc_get_product(get_the_ID()); }
+                    if (!$product) continue;
+                    $price_html = $product->get_price_html();
+                    $is_in_stock = $product->is_in_stock();
+                ?>
+                    <a href="<?php echo esc_url(get_permalink()); ?>" class="group block bg-white border border-[#ECECEC] hover:border-[#FFCD00] transition-all duration-300 hover:-translate-y-0.5" data-reveal="card">
+                        <div class="aspect-square overflow-hidden bg-[#F5F6F7] relative">
+                            <?php if (has_post_thumbnail()): ?>
+                                <?php the_post_thumbnail('medium_large', ['class' => 'w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-500', 'loading' => 'lazy']); ?>
+                            <?php else: ?>
+                                <div class="w-full h-full flex items-center justify-center"><i class="ti ti-photo" style="font-size:48px; color:#C0C0C0;" aria-hidden="true"></i></div>
+                            <?php endif; ?>
+                            <?php if (!$is_in_stock): ?>
+                                <span class="absolute top-2 left-2 bg-[#63666A] text-white text-[10px] tracking-[0.1em] uppercase px-2 py-1">Out of stock</span>
+                            <?php endif; ?>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="text-sm md:text-base font-medium text-[#3A3D40] mb-2 leading-tight line-clamp-2"><?php the_title(); ?></h3>
+                            <?php if ($price_html): ?>
+                                <div class="text-sm text-[#63666A]"><?php echo $price_html; ?></div>
+                            <?php endif; ?>
+                        </div>
+                    </a>
+                <?php endwhile; wp_reset_postdata(); ?>
             </div>
+
+            <?php if ($products_query->max_num_pages > 1):
+                $paginate = paginate_links([
+                    'total' => $products_query->max_num_pages,
+                    'current' => $paged,
+                    'prev_text' => '&larr; Previous',
+                    'next_text' => 'Next &rarr;',
+                    'type' => 'list',
+                ]);
+                if ($paginate):
+            ?>
+                <nav class="tc-products-pagination mt-12 flex justify-center" aria-label="Pagination"><?php echo $paginate; ?></nav>
+            <?php endif; endif; ?>
 
         <?php else: ?>
             <div class="max-w-2xl mx-auto bg-white border border-[#ECECEC] p-10 md:p-14 text-center">
@@ -64,3 +107,11 @@ if ($cat_term && !is_wp_error($cat_term)) {
         <?php endif; ?>
     </div>
 </section>
+<style>
+.tc-products-pagination ul { display: flex; flex-wrap: wrap; gap: 0.5rem; list-style: none; padding: 0; margin: 0; justify-content: center; }
+.tc-products-pagination ul li a, .tc-products-pagination ul li span { display: inline-block; padding: 0.5rem 1rem; border: 1px solid #ECECEC; color: #3A3D40; text-decoration: none; font-size: 0.875rem; background: #FFFFFF; transition: border-color 0.2s; }
+.tc-products-pagination ul li a:hover { border-color: #FFCD00; }
+.tc-products-pagination ul li span.current { background: #FFCD00; border-color: #FFCD00; color: #3A3D40; font-weight: 500; }
+.tc-products-pagination ul li span.dots { border-color: transparent; background: transparent; }
+.line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+</style>
