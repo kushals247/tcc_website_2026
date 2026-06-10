@@ -53,7 +53,7 @@ if ($available_at_tacc) {
     $items[] = '<a href="' . esc_url($tacc_url) . '" target="_blank" rel="noopener" class="text-[#FFCD00] border-b border-[#FFCD00]">Available at TACC &rarr;</a>';
 }
 if ($is_inhouse) {
-    $items[] = '<span class="text-[#FFCD00]">T&amp;C Original Product</span>';
+    $items[] = '<img src="' . esc_url(tc_original_asset('tag', 'grey')) . '" alt="T&amp;C Original Product" class="inline-block h-4 w-auto align-middle" loading="lazy">';
 }
 if ($website) {
     $items[] = '<a href="' . esc_url($website) . '" target="_blank" rel="noopener" class="hover:text-[#FFCD00] transition-colors">Visit official site &rarr;</a>';

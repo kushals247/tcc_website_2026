@@ -51,8 +51,11 @@ $build_url = function($key, $value) use ($base_url) {
         </div>
 
         <p class="text-xs tracking-[0.15em] uppercase text-[#63666A] text-center mb-3 mt-6">FILTER</p>
-        <div class="flex flex-wrap gap-2 justify-center mt-4">
-            <a href="<?php echo esc_url($build_url('inhouse', $current_inhouse ? null : '1')); ?>" class="<?php echo esc_attr($current_inhouse ? $active_class : $base_class); ?>">T&amp;C Original</a>
+        <div class="flex flex-wrap gap-2 justify-center mt-4 items-center">
+            <a href="<?php echo esc_url($build_url('inhouse', $current_inhouse ? null : '1')); ?>" class="<?php echo esc_attr($current_inhouse ? $active_class : $base_class); ?> inline-flex items-center gap-2">
+                <span>Show only</span>
+                <img src="<?php echo esc_url(tc_original_asset('tag', $current_inhouse ? 'yellow' : 'grey')); ?>" alt="T&amp;C Original Products" class="h-4 w-auto" loading="lazy">
+            </a>
             <?php if ($current_inhouse): ?>
                 <a href="<?php echo esc_url($build_url('inhouse', null)); ?>" class="<?php echo esc_attr($base_class); ?>">All brands</a>
             <?php endif; ?>

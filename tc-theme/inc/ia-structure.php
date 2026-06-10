@@ -269,3 +269,26 @@ function tc_get_ia_l1_url($eco_slug, $l1_slug) {
 function tc_get_ia_l2_url($eco_slug, $l1_slug, $l2_slug) {
     return home_url('/' . $eco_slug . '/' . $l1_slug . '/' . $l2_slug . '/');
 }
+
+
+
+/**
+ * T&C Original Products graphic assets.
+ * @param string $type 'logo'|'tag'
+ * @param string $bg   'white'|'grey'|'yellow' — the background colour where the asset will sit
+ * @return string URL
+ */
+function tc_original_asset($type = 'tag', $bg = 'white') {
+    $type = in_array($type, ['logo', 'tag']) ? $type : 'tag';
+    $bg = in_array($bg, ['white', 'grey', 'yellow']) ? $bg : 'white';
+    $base = home_url('/wp-content/uploads/2026/06/');
+    $map = [
+        'logo_white'  => 'TC-Original-Products-Logo-on-White-BG.png',
+        'logo_grey'   => 'TC-Original-Products-Logo-on-Grey-BG.png',
+        'logo_yellow' => 'TC-Original-Products-Logo-on-Yellow-BG.png',
+        'tag_white'   => 'TC-Original-Products-Tag-on-White-BG.png',
+        'tag_grey'    => 'TC-Original-Products-Tag-on-Grey-BG.png',
+        'tag_yellow'  => 'TC-Original-Products-Tag-on-Yellow-BG.png',
+    ];
+    return $base . $map[$type . '_' . $bg];
+}

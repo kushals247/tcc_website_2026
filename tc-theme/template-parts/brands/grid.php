@@ -88,7 +88,7 @@ $clear_url = $base_url;
                 ?>
                     <a href="<?php echo esc_url(get_permalink()); ?>" class="group relative block bg-white border border-[#ECECEC] hover:border-[#FFCD00] p-6 transition-all duration-300 hover:-translate-y-0.5" data-reveal="card">
                         <?php if ($is_inhouse): ?>
-                            <span class="absolute top-2 right-2 text-[10px] tracking-[0.1em] uppercase bg-[#FFCD00] text-[#3A3D40] px-2 py-1">T&amp;C Original</span>
+                            <img src="<?php echo esc_url(tc_original_asset('tag', 'white')); ?>" alt="T&amp;C Original Product" class="absolute top-2 right-2 h-4 w-auto" loading="lazy">
                         <?php endif; ?>
                         <div class="h-20 flex items-center justify-center bg-[#F5F6F7] px-6 py-3">
                             <?php if ($logo_url): ?>

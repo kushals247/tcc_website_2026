@@ -10,6 +10,7 @@ if (!$brands) return;
 ?>
 <section class="tc-about-manuf bg-white py-20 md:py-24">
     <div class="text-center max-w-3xl mx-auto px-6">
+        <img src="<?php echo esc_url(tc_original_asset('logo', 'white')); ?>" alt="T&amp;C Original Products" class="mx-auto mb-6 h-20 md:h-24 w-auto" loading="lazy">
         <?php if ($eyebrow): ?>
             <p class="text-xs tracking-[0.2em] uppercase text-[#FFCD00] font-medium mb-4"><?php echo esc_html($eyebrow); ?></p>
         <?php endif; ?>
